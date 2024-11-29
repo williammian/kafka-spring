@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  postgres:
+    image: postgres
+    container_name: kafka-postgresql
+    environment:
+      POSTGRES_DB: pix
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres-data:/var/lib/postgres
+
+volumes:
+  postgres-data:
