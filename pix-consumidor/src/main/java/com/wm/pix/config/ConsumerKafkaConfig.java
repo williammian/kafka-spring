@@ -60,6 +60,18 @@ public class ConsumerKafkaConfig {
         props.put(
                 JsonDeserializer.TRUSTED_PACKAGES,
                 "*");
+
+        /*
+        props.put(
+                ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 10); //default 500
+        props.put(
+                ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest"); //default "latest"
+        props.put(
+                ConsumerConfig.ALLOW_AUTO_CREATE_TOPICS_CONFIG, false); //default true
+        props.put(
+                ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false); //default true / controlar commit Acknowledgment acknowledgment
+         */
+
         return new DefaultKafkaConsumerFactory<>(props);
     }
 
