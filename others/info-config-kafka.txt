@@ -1,0 +1,19 @@
+Configurando Kafka / Spring
+
+Configurar os grupos de usuários, criando duas instâncias diferentes na nossa aplicação. 
+Essa configuração pode ser feita diretamente na anotação @KafkaListener, no atributo groupId. 
+Com isso, se os consumidores estiverem no mesmo grupo, o Kafka fará um balanceamento de carga entre os diferentes consumidores.
+Já se os consumidores estiverem em grupos diferentes, eles receberão as mesmas mensagens que podem ser 
+processadas para objetivos diferentes.
+
+Fazer configurações avançadas no consumidor para otimizar a conexão com o Kafka. 
+Podemos fazer essas configurações em uma classe especial do Spring, que possui a anotação @Configuration. 
+Nessa classe, podemos inserir diversas configurações como a MAX_POLL_RECORDS_CONFIG, 
+que indica a quantidade de registros que um consumidor irá receber do Kafka, e a ALLOW_AUTO_CREATE_TOPICS_CONFIG, 
+que permite que um tópico seja criado na primeira vez que ele for utilizado na aplicação.
+
+Configurar e utilizar retentativas no consumidor, pois quando há uma exceção, por padrão, a mensagem não é consumida, 
+e há casos em que é interessante que seja processada. 
+No Kafka, é possível configurar para que as retentativas sejam automáticas. 
+Essa configuração é feita com a anotação @RetryableTopic, e ela possui diversas configurações possíveis, 
+como o número de retentativas que serão feitas e quais as exceções que devem ser consideradas para as retentativas.
