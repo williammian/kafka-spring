@@ -9,6 +9,9 @@ pix-consumidor/.idea/
 pix-stream/target/
 pix-stream/.idea/
 
+pix-consumidor-avro/target/
+pix-consumidor-avro/.idea/
+
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/

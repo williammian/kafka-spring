@@ -1,0 +1,15 @@
+Confluent
+
+Configurar o Confluent, uma plataforma que permite usar ferramentas dentro do Kafka, como o Schema Registry e o Kafka Connect. 
+O Kafka, nessa plataforma, possui exatamente as mesmas funcionalidades, mas essas outras ferramentas adicionam ainda mais poderes a ele.
+
+O Schema Registry é uma ferramenta externa para o registro e validação do schema das mensagens em um tópico do Kafka. 
+Quando é adicionado, o produtor envia um schema para a ferramenta Schema Registry e só depois disso a mensagem será enviada para o Kafka. 
+Em seguida, o consumidor vai receber a mensagem com o schema, permitindo que valide se os dados estão corretos ou não.
+
+o Apache Avro é uma biblioteca de serialização e desserialização de dados que faz a validação com dados binários, 
+diminuindo o tamanho das mensagens e acelerando a transmissão dos dados. 
+Para usar essa biblioteca, foi necessário adicionar as dependências do Avro, 
+e gerar o código do Avro usado o plugin avro-maven-plugin, 
+com isso não precisamos nos preocupar em fazer a serialização e deserialização dos dados no formato binário, 
+o código gerado se encarrega dessa atividade.
