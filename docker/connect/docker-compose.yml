@@ -1,0 +1,87 @@
+version: '3.8'
+
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper:3.4.6
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    networks:
+      - kafka-net
+
+  kafka:
+    image: wurstmeister/kafka:latest
+    container_name: kafka
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENER: INSIDE://kafka:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL: PLAINTEXT
+      KAFKA_LISTENER_NAME_INSIDE: INSIDE
+      KAFKA_LISTENER_INTERNAL: INSIDE://kafka:9093
+      KAFKA_LISTENER_EXTERNAL: EXTERNAL://localhost:9092
+      KAFKA_LISTENER_PORT: 9093
+      KAFKA_LISTENER_NAME_EXTERNAL: EXTERNAL
+      KAFKA_LISTENERS: INSIDE://0.0.0.0:9093,EXTERNAL://0.0.0.0:9092
+      KAFKA_LISTENER_NAME_INTERNAL: INSIDE
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL: PLAINTEXT
+    ports:
+      - "9092:9092"
+    networks:
+      - kafka-net
+
+  kafka-connect:
+    image: confluentinc/cp-kafka-connect:latest
+    container_name: kafka-connect
+    environment:
+      CONNECT_BOOTSTRAP_SERVERS: kafka:9093
+      CONNECT_GROUP_ID: "1"
+      CONNECT_CONFIG_STORAGE_TOPIC: "kafka-connect-configs"
+      CONNECT_OFFSET_STORAGE_TOPIC: "kafka-connect-offsets"
+      CONNECT_STATUS_STORAGE_TOPIC: "kafka-connect-status"
+      CONNECT_KEY_CONVERTER: "org.apache.kafka.connect.storage.StringConverter"
+      CONNECT_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      CONNECT_REST_PORT: 8083
+      CONNECT_PLUGIN_PATH: "/usr/share/java"
+    ports:
+      - "8083:8083"
+    volumes:
+      - ./kafka-connect-plugins:/usr/share/java
+    networks:
+      - kafka-net
+
+  postgres:
+    image: debezium/postgres:15
+    container_name: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - kafka-net
+
+  debezium-postgres-connector:
+    image: debezium/connect:latest
+    container_name: debezium-connector
+    environment:
+      - CONNECT_BOOTSTRAP_SERVERS=kafka:9093
+      - CONNECT_GROUP_ID=debezium-group
+      - CONNECT_CONFIG_STORAGE_TOPIC=debezium-configs
+      - CONNECT_OFFSET_STORAGE_TOPIC=debezium-offsets
+      - CONNECT_STATUS_STORAGE_TOPIC=debezium-status
+      - CONNECT_KEY_CONVERTER=org.apache.kafka.connect.storage.StringConverter
+      - CONNECT_VALUE_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+      - CONNECT_REST_PORT=8083
+      - CONNECT_PLUGIN_PATH=/usr/share/java
+      - CONNECT_PLUGIN_PATH=/usr/share/java/debezium-connector-postgresql-2.1.4
+    ports:
+      - "8084:8083"
+    volumes:
+      - ./kafka-connect-plugins:/usr/share/java
+    networks:
+      - kafka-net
+
+networks:
+  kafka-net:
+    driver: bridge

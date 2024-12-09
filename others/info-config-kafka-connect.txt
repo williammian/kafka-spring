@@ -1,0 +1,32 @@
+Utilizando o Postgres com o Kafka Connect
+
+Para utilizar o Postgres com o Kafka Connect, é necessário configurar o Postgres para a execução no modo de replicação. 
+Para isso, adicione as seguintes linhas no final do arquivo postgresql.conf:
+
+# LOGGING
+log_min_error_statement = fatal
+# CONNECTION
+listen_addresses = '*'
+# MODULES
+shared_preload_libraries = 'decoderbufs'
+# REPLICATION
+wal_level = logical             # minimal, archive, hot_standby, or logical (change requires restart)
+max_wal_senders = 1             # max number of walsender processes (change requires restart)
+#wal_keep_segments = 4          # in logfile segments, 16MB each; 0 disables
+#wal_sender_timeout = 60s       # in milliseconds; 0 disables
+max_replication_slots = 1       # max number of replication slots (change requires restart)
+
+A documentação do Confluent traz um tutorial completo sobre como configurar o Postgres para utilizá-lo com o Kafka Connect.
+https://docs.confluent.io/kafka-connectors/debezium-postgres-source/current/overview.html
+
+Outra possibilidade, é usar a imagem do Docker debezium/postgresql, que já está totalmente configurada para ser usada com o Kafka Connect. 
+Ela pode ser utilizada com o seguinte comando:
+
+docker run --name postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d debezium/postgres:15
+
+Por fim, depois que o Postgres for totalmente configurado, é necessário instalar dois plugins no 
+Confluent Kafka para a utilização do Postgres com o Kafka Connect. Para isso, basta executar os seguintes comandos:
+
+confluent-hub install debezium/debezium-connector-postgresql:2.1.4
+
+confluent-hub install confluentinc/kafka-connect-jdbc:10.7.0

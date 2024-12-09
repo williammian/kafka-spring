@@ -1,0 +1,12 @@
+Kafka Connect
+
+O Kafka Connect é uma ferramenta que consegue se comunicar diretamente com diversas fontes de dados, sem ter que escrever nenhum 
+código para isso. Apenas precisamos configurar a conexão com o banco de dados diretamente no console do Confluent e, depois disso, 
+automaticamente qualquer registro que for salvo no banco de dados será enviado para o tópico do Kafka.
+
+Com o Kafka Connect, não precisamos de uma aplicação produtora, apenas tivemos que alterar a nossa aplicação 
+para que os dados fossem salvos no banco de dados, e com o Kafka Connect, os dados são enviados automaticamente para o tópico do Kafka.
+
+Configurar uma fonte de dados no Confluent Kafka para que o Kafka Connect pegue diretamente no banco de dados os dados que adicionamos 
+e mande para o tópico da aplicação. Vimos que precisamos instalar algumas dependências no Confluent antes e, depois, diretamente 
+na interface do Confluent conseguimos configurar uma fonte de dados, que entre as várias opções, pode ser um banco de dados do PostgreSQL.

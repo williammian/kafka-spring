@@ -12,6 +12,12 @@ pix-stream/.idea/
 pix-consumidor-avro/target/
 pix-consumidor-avro/.idea/
 
+pix-consumidor-connect/target/
+pix-consumidor-connect/.idea/
+
+pix-produtor-connect/target/
+pix-produtor-connect/.idea/
+
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
