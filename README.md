@@ -77,5 +77,5 @@ O projeto está organizado nos seguintes módulos:
 
 ## Licença
 
-Este projeto está licenciado sob a licença MIT. Consulte o arquivo LICENSE para obter mais informações.
+Este projeto está licenciado sob a licença MIT.
 
